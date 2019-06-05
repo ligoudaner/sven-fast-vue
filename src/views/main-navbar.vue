@@ -2,8 +2,8 @@
   <nav class="site-navbar" :class="'site-navbar--' + navbarLayoutType">
     <div class="site-navbar__header">
       <h1 class="site-navbar__brand" @click="$router.push({ name: 'home' })">
-        <a class="site-navbar__brand-lg" href="javascript:;">DNF征服者</a>
-        <a class="site-navbar__brand-mini" href="javascript:;">DNF</a>
+        <a class="site-navbar__brand-lg" href="javascript:;">Sven</a>
+        <a class="site-navbar__brand-mini" href="javascript:;">Sven</a>
       </h1>
     </div>
     <div class="site-navbar__body clearfix">
@@ -26,8 +26,8 @@
         </el-menu-item>
         <el-submenu index="2">
           <template slot="title">其他</template>
-          <el-menu-item index="2-1"><a href="//m.dnfzhengfuzhe.com/#/auth/code/input" target="_blank">团长申请</a></el-menu-item>
-          <el-menu-item index="2-2"><a href="//bbs.dnfzhengfuzhe.com" target="_blank">论坛</a></el-menu-item>
+          <el-menu-item index="2-1"><a href="//baidu.com" target="_blank">百度</a></el-menu-item>
+          <el-menu-item index="2-2"><a href="//biying.com" target="_blank">必应</a></el-menu-item>
         </el-submenu>
         <el-menu-item class="site-navbar__avatar" index="3">
           <el-dropdown :show-timeout="0" placement="bottom">

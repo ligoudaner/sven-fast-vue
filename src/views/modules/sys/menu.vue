@@ -12,6 +12,10 @@
       element-loading-text="拼命加载中"
       row-key="menuId"
       border
+      ref="table"
+      highlight-current-row
+      @cell-click="handleCellClick"
+      :cell-style="tableCellStyle"
       style="width: 100%; ">
       <el-table-column
         prop="name"
@@ -148,6 +152,23 @@
             }
           })
         }).catch(() => {})
+      },
+      handleCellClick (row, column) {
+        if (column.property === 'name') {
+          // 临时解决方案：https://github.com/ElemeFE/element/issues/15863
+          this.$nextTick(() => {
+            const expandIcon = this.$el.querySelector('.current-row .el-table__expand-icon')
+            if (expandIcon) {
+              expandIcon.click()
+            }
+          })
+          // this.$refs.table.toggleRowExpansion(row.children, true)
+        }
+      },
+      tableCellStyle (row) {
+        if (row.column.property === 'name') {
+          return 'cursor:pointer'
+        }
       }
     }
   }
