@@ -45,6 +45,7 @@
         prop="email"
         header-align="center"
         align="center"
+        width="180"
         label="邮箱">
       </el-table-column>
       <el-table-column
