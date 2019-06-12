@@ -33,6 +33,12 @@
         label="用户操作">
       </el-table-column>
       <el-table-column
+        prop="type"
+        header-align="center"
+        align="center"
+        label="类型">
+      </el-table-column>
+      <el-table-column
         prop="method"
         header-align="center"
         align="center"
