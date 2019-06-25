@@ -29,6 +29,11 @@
             <el-form-item>
               <el-button class="login-btn-submit" type="primary" @click="dataFormSubmit()">登录</el-button>
             </el-form-item>
+            <el-form-item>
+              <el-button class="qq-login-btn" circle @click="qqLogin()">
+                <icon-svg name="qq"></icon-svg>
+              </el-button>
+            </el-form-item>
           </el-form>
         </div>
       </div>
@@ -58,7 +63,8 @@
             { required: true, message: '验证码不能为空', trigger: 'blur' }
           ]
         },
-        captchaPath: ''
+        captchaPath: '',
+        w: ''
       }
     },
     created () {
@@ -94,6 +100,62 @@
       getCaptcha () {
         this.dataForm.uuid = getUUID()
         this.captchaPath = this.$http.adornUrl(`/captcha.jpg?uuid=${this.dataForm.uuid}`)
+      },
+      qqLogin () {
+        this.$http({
+          url: this.$http.adornUrl('/oauth2/getQqAuthorizeUrl'),
+          method: 'get',
+          params: this.$http.adornParams()
+        }).then(({data}) => {
+          if (data && data.code === 0) {
+            this.webSocket(data.state).then(() => {
+              this.w = window.open(
+                data.qqAuthorizeUrl, 'newwindow', 'height=500, width=400, top=' + (window.screen.availHeight - 500) / 2 +
+                ', left = ' + (window.screen.availWidth - 400) / 2 + ', toolbar=no, menubar=no,scrollbars=no, resizable=no,location=no, status=no'
+              )
+            }, error => {
+              this.$message.error(error.message)
+            })
+          } else {
+            this.$message.error(data.msg)
+          }
+        })
+      },
+      webSocket (state) {
+        if (WebSocket) {
+          // 实例化socket
+          this.socket = new WebSocket('ws://127.0.0.1:8080/sven-fast/socketServer/' + state)
+          // 监听socket连接
+          this.socket.onopen = this.openSocket
+          // 监听socket错误信息
+          this.socket.onerror = this.socketError
+          // 监听socket消息
+          this.socket.onmessage = this.getSocketMessage
+          // 监听socket关闭
+          this.socket.onclose = this.socketClose
+        } else {
+          return new Promise(function (resolve, reject) {
+            reject(new Error('你的浏览器不支持WebSocket'))
+          })
+        }
+        return new Promise(function (resolve, reject) {
+          resolve()
+        })
+      },
+      openSocket (evt) {
+        console.log('连接成功')
+      },
+      getSocketMessage (evt) {
+        if (this.w) {
+          this.w.close()
+        }
+        console.log('关闭窗口')
+      },
+      socketError (evt) {
+        console.log('错误信息')
+      },
+      socketClose () {
+        console.log('websocket关闭')
       }
     }
   }
@@ -173,6 +235,17 @@
     .login-btn-submit {
       width: 100%;
       margin-top: 38px;
+    }
+    .qq-login-btn{
+      padding: 1px;
+      line-height: 1px;
+    }
+    .icon-svg {
+      width: 2.2em;
+      height: 2.2em;
+      fill: currentColor;
+      overflow: hidden;
+      cursor: pointer;
     }
   }
 </style>
