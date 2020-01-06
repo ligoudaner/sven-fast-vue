@@ -148,6 +148,8 @@
       getSocketMessage (evt) {
         if (this.w) {
           this.w.close()
+          // this.$cookie.set('token', data.token)
+          // this.$router.replace({ name: 'home' })
         }
         console.log('关闭窗口')
       },
